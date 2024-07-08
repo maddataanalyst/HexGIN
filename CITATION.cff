@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this data, please cite it as below."
+authors:
+- family-names: "Wójcik"
+  given-names: "F."
+title: "An Analysis of Novel Money Laundering Data Using Heterogeneous Graph Isomorphism Networks"
+version: 28
+date-released: 2024-01-01
+journal: "Econometrics. Ekonometria. Advances in Applied Data Analysis"
+volume: "28"
+issue: "2"
+start: "32"
+end: "49"
