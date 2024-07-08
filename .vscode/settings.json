@@ -1,0 +1,4 @@
+{
+    "jupyter.debugJustMyCode": false,
+    "ruff.lint.run": "onSave"
+}

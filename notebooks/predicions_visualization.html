@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "lightgreen", "id": 16, "label": "abn-amro-bank", "shape": "dot"}, {"color": "lightblue", "id": 67, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 17, "label": "abn-amro-bank-amsterdam-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 68, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 18, "label": "abn-amro-bank-nv", "shape": "dot"}, {"color": "lightblue", "id": 69, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 19, "label": "abn-amro-bank-nv-amsterdam-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 70, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 20, "label": "abn-amro-bank-nv-amsterdam-nld", "shape": "dot"}, {"color": "lightblue", "id": 71, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 21, "label": "abn-amro-bank-nv-head-office-amsterdam-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 72, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 22, "label": "abn-amro-bank-nv-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 73, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 23, "label": "abn-amro-bank-nv-rotterdam-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 74, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 24, "label": "abn-amro-bank-nv-uae-are", "shape": "dot"}, {"color": "lightblue", "id": 75, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 25, "label": "abn-amro-bank-nv-uae-dubai-uae-are", "shape": "dot"}, {"color": "lightblue", "id": 76, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 26, "label": "abn-amro-bank-nvamsterdam", "shape": "dot"}, {"color": "lightblue", "id": 77, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 27, "label": "abn-amro-clearing-bank-nv-amsterdam-netherlands-nld", "shape": "dot"}, {"color": "lightblue", "id": 78, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 28, "label": "abn-amro-luxembourg-lux", "shape": "dot"}, {"color": "lightblue", "id": 79, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 29, "label": "abu-dhabi-commercial-bank", "shape": "dot"}, {"color": "lightblue", "id": 80, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 30, "label": "abu-dhabi-commercial-bank-uae-are", "shape": "dot"}, {"color": "lightblue", "id": 81, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 31, "label": "access-bank-uk-limited-london-gb-gbr", "shape": "dot"}, {"color": "lightblue", "id": 82, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 32, "label": "active-bank", "shape": "dot"}, {"color": "lightblue", "id": 83, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 33, "label": "aegean-baltic-bank-sa", "shape": "dot"}, {"color": "lightblue", "id": 84, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 34, "label": "afgan-united-bank-kabul-afghanistan-afg", "shape": "dot"}, {"color": "lightblue", "id": 85, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 35, "label": "afghan-united-bank-kabul-afghanistan-afg", "shape": "dot"}, {"color": "lightblue", "id": 86, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 36, "label": "afghanistan-international-bank-kabul-afghanistan-afg", "shape": "dot"}, {"color": "lightblue", "id": 87, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 88, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 37, "label": "afrasia-bank-limited-port-luis-mauritius-mus", "shape": "dot"}, {"color": "lightblue", "id": 89, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 90, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 38, "label": "agricultural-bank-of-china-beijing-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 91, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 92, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 39, "label": "agricultural-bank-of-china-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 93, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 94, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 95, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 96, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 40, "label": "agricultural-bank-of-china-liaoning-branch-shenyang-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 97, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 98, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 41, "label": "agricultural-bank-of-china-limited-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 99, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 100, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 101, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 102, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 103, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 42, "label": "agricultural-bank-of-china-qingdao-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 104, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 105, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 106, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 107, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 108, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 109, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 43, "label": "agricultural-bank-of-china-shandong-province-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 110, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 111, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 44, "label": "agricultural-development-bank-of-china-beijing-china-chn", "shape": "dot"}, {"color": "lightblue", "id": 112, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 113, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 45, "label": "agropromcredit", "shape": "dot"}, {"color": "lightblue", "id": 114, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 115, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 116, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 117, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 118, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 119, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 120, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 46, "label": "ahli-bank-qsc", "shape": "dot"}, {"color": "lightblue", "id": 121, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 122, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 47, "label": "ahli-bank-qsc-doha-qatar-qat", "shape": "dot"}, {"color": "lightblue", "id": 123, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 124, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 48, "label": "aib-allied-irish-bank", "shape": "dot"}, {"color": "lightblue", "id": 125, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 49, "label": "aig-private-bank", "shape": "dot"}, {"color": "lightblue", "id": 126, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 50, "label": "aizkraukles", "shape": "dot"}, {"color": "lightblue", "id": 127, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 128, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 51, "label": "aizkraukles-banka", "shape": "dot"}, {"color": "lightblue", "id": 129, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 52, "label": "aizkraukles-banka-latvia-lva", "shape": "dot"}, {"color": "lightblue", "id": 130, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 53, "label": "aizkraukles-banka-riga-latvia-lva", "shape": "dot"}, {"color": "lightblue", "id": 131, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 54, "label": "aizraulkles-banka", "shape": "dot"}, {"color": "lightblue", "id": 132, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 55, "label": "aizraulkles-banka-latvia-lva", "shape": "dot"}, {"color": "lightblue", "id": 133, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 56, "label": "ajman-bank-pjsc-ajman-uae-are", "shape": "dot"}, {"color": "lightblue", "id": 134, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 57, "label": "ak-bars-bank-russia-rus", "shape": "dot"}, {"color": "lightblue", "id": 135, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 136, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 58, "label": "akbank-t-a-s-turkey-tur", "shape": "dot"}, {"color": "lightblue", "id": 137, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 59, "label": "akbank-tas", "shape": "dot"}, {"color": "lightblue", "id": 138, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 139, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 60, "label": "akbank-tas-istanbul-turkey-tur", "shape": "dot"}, {"color": "lightblue", "id": 140, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 61, "label": "akbank-tas-turkey-tur", "shape": "dot"}, {"color": "lightblue", "id": 141, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 142, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 143, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 144, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 145, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 146, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 147, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 148, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 62, "label": "akciju-komercbanka-baltikums", "shape": "dot"}, {"color": "lightblue", "id": 149, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 63, "label": "aktia-savings-bank", "shape": "dot"}, {"color": "lightblue", "id": 150, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 151, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 152, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 64, "label": "aktia-savings-bank-helsinki-finland-fin", "shape": "dot"}, {"color": "lightblue", "id": 153, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 65, "label": "aktif-investment-bank-as-istanbul-turkey-tur", "shape": "dot"}, {"color": "lightblue", "id": 154, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 155, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 156, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 66, "label": "aktif-yatirim-bankasi-as-istanbul-turkey-tur", "shape": "dot"}, {"color": "lightblue", "id": 157, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 158, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 0, "label": "a-s-jyske-bank", "shape": "dot"}, {"color": "lightgreen", "id": 2, "label": "ab-bankas-snoras-lithuania-ltu", "shape": "dot"}, {"color": "lightgreen", "id": 5, "label": "ab-dnb-bankas-vilnius-lithuania-ltu", "shape": "dot"}, {"color": "lightgreen", "id": 7, "label": "abanca-corporacion-bancaria-sa", "shape": "dot"}, {"color": "lightgreen", "id": 8, "label": "abc-banking-corporation-ltd", "shape": "dot"}, {"color": "lightgreen", "id": 11, "label": "ablv-bank-as-latvia-lva", "shape": "dot"}, {"color": "lightgreen", "id": 12, "label": "ablv-bank-as-riga-latvia-latvia-lva", "shape": "dot"}, {"color": "lightgreen", "id": 15, "label": "ablv-bank-riga-latvia-lva", "shape": "dot"}, {"color": "lightblue", "id": 159, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 160, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 161, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 162, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 163, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 164, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 165, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 166, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 167, "label": "filing", "shape": "dot"}, {"color": "lightblue", "id": 168, "label": "filing", "shape": "dot"}, {"color": "lightgreen", "id": 6, "label": "ab-dnb-nord-bankas-vilnius-lithuania-ltu", "shape": "dot"}, {"color": "lightgreen", "id": 9, "label": "ablv-bank", "shape": "dot"}, {"color": "lightgreen", "id": 13, "label": "ablv-bank-as-riga-latvia-lva", "shape": "dot"}, {"color": "lightgreen", "id": 1, "label": "a-s-jyske-bank-copenhagen-denmark-dnk", "shape": "dot"}, {"color": "lightgreen", "id": 10, "label": "ablv-bank-as", "shape": "dot"}, {"color": "lightgreen", "id": 4, "label": "ab-dnb-bankas-lithuania-ltu", "shape": "dot"}, {"color": "lightgreen", "id": 14, "label": "ablv-bank-latvia-lva", "shape": "dot"}, {"color": "lightgreen", "id": 3, "label": "ab-dnb-bankas", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"color": "black", "from": 16, "label": "sends", "to": 67, "width": 2.5}, {"color": "black", "from": 17, "label": "sends", "to": 68, "width": 2.5}, {"color": "black", "from": 18, "label": "sends", "to": 69, "width": 2.5}, {"color": "black", "from": 19, "label": "sends", "to": 70, "width": 2.5}, {"color": "black", "from": 20, "label": "sends", "to": 71, "width": 2.5}, {"color": "black", "from": 21, "label": "sends", "to": 72, "width": 2.5}, {"color": "black", "from": 22, "label": "sends", "to": 73, "width": 2.5}, {"color": "black", "from": 23, "label": "sends", "to": 74, "width": 2.5}, {"color": "black", "from": 24, "label": "sends", "to": 75, "width": 2.5}, {"color": "black", "from": 25, "label": "sends", "to": 76, "width": 2.5}, {"color": "black", "from": 26, "label": "sends", "to": 77, "width": 2.5}, {"color": "black", "from": 27, "label": "sends", "to": 78, "width": 2.5}, {"color": "black", "from": 28, "label": "sends", "to": 79, "width": 2.5}, {"color": "black", "from": 29, "label": "sends", "to": 80, "width": 2.5}, {"color": "black", "from": 30, "label": "sends", "to": 81, "width": 2.5}, {"color": "black", "from": 31, "label": "sends", "to": 82, "width": 2.5}, {"color": "black", "from": 32, "label": "sends", "to": 83, "width": 2.2077661878407318}, {"color": "black", "from": 33, "label": "sends", "to": 84, "width": 3.1620747864649514}, {"color": "black", "from": 34, "label": "sends", "to": 85, "width": 3.1277956406951675}, {"color": "black", "from": 35, "label": "sends", "to": 86, "width": 3.370041185970054}, {"color": "black", "from": 36, "label": "sends", "to": 87, "width": 4.1653983366239515}, {"color": "black", "from": 35, "label": "sends", "to": 88, "width": 4.017039346801473}, {"color": "black", "from": 37, "label": "sends", "to": 89, "width": 3.5654887358717517}, {"color": "black", "from": 28, "label": "sends", "to": 90, "width": 2.767542861234765}, {"color": "black", "from": 38, "label": "sends", "to": 91, "width": 2.35445379129329}, {"color": "black", "from": 28, "label": "sends", "to": 92, "width": 2.0112284220140095}, {"color": "black", "from": 39, "label": "sends", "to": 93, "width": 2.4590137599882214}, {"color": "black", "from": 38, "label": "sends", "to": 94, "width": 2.2953738232223664}, {"color": "black", "from": 39, "label": "sends", "to": 95, "width": 2.729105266754821}, {"color": "black", "from": 28, "label": "sends", "to": 96, "width": 3.2181942879494265}, {"color": "black", "from": 40, "label": "sends", "to": 97, "width": 3.2105181944071335}, {"color": "black", "from": 40, "label": "sends", "to": 98, "width": 3.2006152348877084}, {"color": "black", "from": 41, "label": "sends", "to": 99, "width": 3.055847069169655}, {"color": "black", "from": 16, "label": "sends", "to": 100, "width": 2.879229149345534}, {"color": "black", "from": 16, "label": "sends", "to": 101, "width": 3.04519962861927}, {"color": "black", "from": 16, "label": "sends", "to": 102, "width": 3.0302830594867203}, {"color": "black", "from": 16, "label": "sends", "to": 103, "width": 3.0664465937222323}, {"color": "black", "from": 42, "label": "sends", "to": 104, "width": 1.9717020592531682}, {"color": "black", "from": 16, "label": "sends", "to": 105, "width": 2.7721662074228615}, {"color": "black", "from": 42, "label": "sends", "to": 106, "width": 2.6023821285132454}, {"color": "black", "from": 16, "label": "sends", "to": 107, "width": 3.002011790081915}, {"color": "black", "from": 42, "label": "sends", "to": 108, "width": 2.9368418569039987}, {"color": "black", "from": 42, "label": "sends", "to": 109, "width": 2.5753549816588106}, {"color": "black", "from": 43, "label": "sends", "to": 110, "width": 1.45121204113771}, {"color": "black", "from": 43, "label": "sends", "to": 111, "width": 3.71593700200457}, {"color": "black", "from": 44, "label": "sends", "to": 112, "width": 1.5751567312353933}, {"color": "black", "from": 43, "label": "sends", "to": 113, "width": 1.5295991101112425}, {"color": "black", "from": 45, "label": "sends", "to": 114, "width": 2.141909881512442}, {"color": "black", "from": 45, "label": "sends", "to": 115, "width": 3.8770907331800153}, {"color": "black", "from": 45, "label": "sends", "to": 116, "width": 4.248175487309323}, {"color": "black", "from": 45, "label": "sends", "to": 117, "width": 3.6715243020769774}, {"color": "black", "from": 31, "label": "sends", "to": 118, "width": 2.9664752934406096}, {"color": "black", "from": 31, "label": "sends", "to": 119, "width": 2.7607475574784495}, {"color": "black", "from": 31, "label": "sends", "to": 120, "width": 2.4699695037465763}, {"color": "black", "from": 46, "label": "sends", "to": 121, "width": 2.7862281488661447}, {"color": "black", "from": 28, "label": "sends", "to": 122, "width": 2.6071947834608764}, {"color": "black", "from": 47, "label": "sends", "to": 123, "width": 2.680449515146882}, {"color": "black", "from": 47, "label": "sends", "to": 124, "width": 2.450824929082457}, {"color": "black", "from": 48, "label": "sends", "to": 125, "width": 2.6496446357890173}, {"color": "black", "from": 49, "label": "sends", "to": 126, "width": 2.409633645886763}, {"color": "black", "from": 50, "label": "sends", "to": 127, "width": 2.2920198241554997}, {"color": "black", "from": 28, "label": "sends", "to": 128, "width": 2.678763712318761}, {"color": "black", "from": 51, "label": "sends", "to": 129, "width": 2.5257702101226807}, {"color": "black", "from": 52, "label": "sends", "to": 130, "width": 2.394851902356162}, {"color": "black", "from": 53, "label": "sends", "to": 131, "width": 2.5}, {"color": "black", "from": 54, "label": "sends", "to": 132, "width": 2.5}, {"color": "black", "from": 55, "label": "sends", "to": 133, "width": 2.5}, {"color": "black", "from": 56, "label": "sends", "to": 134, "width": 2.5}, {"color": "black", "from": 57, "label": "sends", "to": 135, "width": 2.5}, {"color": "black", "from": 56, "label": "sends", "to": 136, "width": 2.5}, {"color": "black", "from": 58, "label": "sends", "to": 137, "width": 2.5}, {"color": "black", "from": 59, "label": "sends", "to": 138, "width": 2.5}, {"color": "black", "from": 16, "label": "sends", "to": 139, "width": 2.536512907857245}, {"color": "black", "from": 60, "label": "sends", "to": 140, "width": 2.8710014416293257}, {"color": "black", "from": 61, "label": "sends", "to": 141, "width": 2.6228890005946104}, {"color": "black", "from": 60, "label": "sends", "to": 142, "width": 3.067511468392357}, {"color": "black", "from": 42, "label": "sends", "to": 143, "width": 2.517808158440708}, {"color": "black", "from": 42, "label": "sends", "to": 144, "width": 2.6671713636508976}, {"color": "black", "from": 16, "label": "sends", "to": 145, "width": 2.567698041296043}, {"color": "black", "from": 60, "label": "sends", "to": 146, "width": 2.8603773488555873}, {"color": "black", "from": 42, "label": "sends", "to": 147, "width": 2.7695489519463106}, {"color": "black", "from": 16, "label": "sends", "to": 148, "width": 2.485242429869546}, {"color": "black", "from": 62, "label": "sends", "to": 149, "width": 2.5}, {"color": "black", "from": 63, "label": "sends", "to": 150, "width": 2.5}, {"color": "black", "from": 56, "label": "sends", "to": 151, "width": 2.5}, {"color": "black", "from": 63, "label": "sends", "to": 152, "width": 2.5}, {"color": "black", "from": 64, "label": "sends", "to": 153, "width": 2.5}, {"color": "black", "from": 65, "label": "sends", "to": 154, "width": 2.5}, {"color": "black", "from": 29, "label": "sends", "to": 155, "width": 2.5}, {"color": "black", "from": 58, "label": "sends", "to": 156, "width": 2.5}, {"color": "black", "from": 66, "label": "sends", "to": 157, "width": 2.5}, {"color": "black", "from": 63, "label": "sends", "to": 158, "width": 2.5}, {"color": "black", "from": 83, "label": "benefits", "to": 0, "width": 2.8085192148370024}, {"color": "black", "from": 84, "label": "benefits", "to": 2, "width": 2.5032809060557666}, {"color": "black", "from": 85, "label": "benefits", "to": 2, "width": 2.706885847985156}, {"color": "black", "from": 86, "label": "benefits", "to": 2, "width": 2.4646440799747236}, {"color": "black", "from": 87, "label": "benefits", "to": 2, "width": 2.46847846647294}, {"color": "black", "from": 88, "label": "benefits", "to": 2, "width": 2.9347389208709114}, {"color": "black", "from": 89, "label": "benefits", "to": 2, "width": 2.499845846779742}, {"color": "black", "from": 90, "label": "benefits", "to": 5, "width": 2.7026274300179542}, {"color": "black", "from": 91, "label": "benefits", "to": 5, "width": 2.5061846796994662}, {"color": "black", "from": 92, "label": "benefits", "to": 5, "width": 2.6513408423752955}, {"color": "black", "from": 93, "label": "benefits", "to": 5, "width": 2.8576886375476156}, {"color": "black", "from": 94, "label": "benefits", "to": 5, "width": 2.526578888050481}, {"color": "black", "from": 95, "label": "benefits", "to": 5, "width": 2.771883842718554}, {"color": "black", "from": 96, "label": "benefits", "to": 5, "width": 2.5485221201496837}, {"color": "black", "from": 97, "label": "benefits", "to": 5, "width": 2.5762477069154044}, {"color": "black", "from": 98, "label": "benefits", "to": 5, "width": 2.508311643181067}, {"color": "black", "from": 99, "label": "benefits", "to": 5, "width": 2.479001432871994}, {"color": "black", "from": 100, "label": "benefits", "to": 7, "width": 2.7176212632772367}, {"color": "black", "from": 101, "label": "benefits", "to": 7, "width": 2.5716117678912647}, {"color": "black", "from": 102, "label": "benefits", "to": 7, "width": 2.8751221461152903}, {"color": "black", "from": 103, "label": "benefits", "to": 7, "width": 3.4163487527726417}, {"color": "black", "from": 104, "label": "benefits", "to": 7, "width": 2.9847014893036574}, {"color": "black", "from": 105, "label": "benefits", "to": 7, "width": 2.740407331974046}, {"color": "black", "from": 106, "label": "benefits", "to": 7, "width": 2.748610433750232}, {"color": "black", "from": 107, "label": "benefits", "to": 7, "width": 2.7908702320941425}, {"color": "black", "from": 108, "label": "benefits", "to": 7, "width": 2.5340650827246893}, {"color": "black", "from": 109, "label": "benefits", "to": 7, "width": 2.908841264101658}, {"color": "black", "from": 110, "label": "benefits", "to": 8, "width": 2.4149688901737734}, {"color": "black", "from": 111, "label": "benefits", "to": 8, "width": 1.6800613387786347}, {"color": "black", "from": 112, "label": "benefits", "to": 8, "width": 2.4268270268269703}, {"color": "black", "from": 113, "label": "benefits", "to": 8, "width": 2.182940223638284}, {"color": "black", "from": 114, "label": "benefits", "to": 11, "width": 2.823261392094252}, {"color": "black", "from": 115, "label": "benefits", "to": 11, "width": 3.354608884441372}, {"color": "black", "from": 116, "label": "benefits", "to": 11, "width": 3.226537414814041}, {"color": "black", "from": 117, "label": "benefits", "to": 11, "width": 2.7725653547589486}, {"color": "black", "from": 118, "label": "benefits", "to": 12, "width": 2.5038729059171025}, {"color": "black", "from": 119, "label": "benefits", "to": 12, "width": 2.101846217771089}, {"color": "black", "from": 120, "label": "benefits", "to": 12, "width": 2.6052074070199494}, {"color": "black", "from": 121, "label": "benefits", "to": 15, "width": 3.606072790201034}, {"color": "black", "from": 159, "label": "benefits", "to": 16, "width": 1.232580379953152}, {"color": "black", "from": 160, "label": "benefits", "to": 16, "width": 3.974045824900175}, {"color": "black", "from": 161, "label": "benefits", "to": 16, "width": 3.586033972306528}, {"color": "black", "from": 162, "label": "benefits", "to": 16, "width": 3.0859056677906453}, {"color": "black", "from": 163, "label": "benefits", "to": 16, "width": 3.2927099634325514}, {"color": "black", "from": 164, "label": "benefits", "to": 16, "width": 2.10872436549656}, {"color": "black", "from": 165, "label": "benefits", "to": 16, "width": 3.313016820082618}, {"color": "black", "from": 166, "label": "benefits", "to": 16, "width": 1.1467821096652888}, {"color": "black", "from": 167, "label": "benefits", "to": 16, "width": 0.7121237102905588}, {"color": "black", "from": 168, "label": "benefits", "to": 16, "width": 3.899212695142002}, {"color": "black", "from": 122, "label": "concerns", "to": 5, "width": 2.55585735255129}, {"color": "black", "from": 123, "label": "concerns", "to": 5, "width": 2.76589211900452}, {"color": "black", "from": 124, "label": "concerns", "to": 5, "width": 2.760896787394687}, {"color": "black", "from": 125, "label": "concerns", "to": 5, "width": 2.6834141790954105}, {"color": "black", "from": 126, "label": "concerns", "to": 5, "width": 2.7026428102167053}, {"color": "black", "from": 127, "label": "concerns", "to": 5, "width": 2.4283019254838885}, {"color": "black", "from": 128, "label": "concerns", "to": 5, "width": 2.4377016762096377}, {"color": "black", "from": 129, "label": "concerns", "to": 5, "width": 2.7520769830360163}, {"color": "black", "from": 130, "label": "concerns", "to": 5, "width": 2.9255189826707104}, {"color": "black", "from": 131, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 132, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 133, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 134, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 135, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 136, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 137, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 138, "label": "concerns", "to": 6, "width": 2.5}, {"color": "black", "from": 139, "label": "concerns", "to": 7, "width": 2.7218205730033302}, {"color": "black", "from": 140, "label": "concerns", "to": 7, "width": 2.8933747610744383}, {"color": "black", "from": 141, "label": "concerns", "to": 7, "width": 2.920084759938564}, {"color": "black", "from": 142, "label": "concerns", "to": 7, "width": 2.4710554190850447}, {"color": "black", "from": 143, "label": "concerns", "to": 7, "width": 2.687818784630684}, {"color": "black", "from": 144, "label": "concerns", "to": 7, "width": 2.6822133244694}, {"color": "black", "from": 145, "label": "concerns", "to": 7, "width": 2.726141034864691}, {"color": "black", "from": 146, "label": "concerns", "to": 7, "width": 2.440416881510304}, {"color": "black", "from": 147, "label": "concerns", "to": 7, "width": 2.6243418506074594}, {"color": "black", "from": 148, "label": "concerns", "to": 7, "width": 2.7277491996518672}, {"color": "black", "from": 149, "label": "concerns", "to": 9, "width": 2.5}, {"color": "black", "from": 150, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 151, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 152, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 153, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 154, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 155, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 80, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 156, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 157, "label": "concerns", "to": 13, "width": 2.5}, {"color": "black", "from": 158, "label": "concerns", "to": 13, "width": 2.5}, {"color": "green", "from": 73, "label": "concerns", "to": 15, "width": 5}, {"color": "green", "from": 78, "label": "concerns", "to": 11, "width": 5}, {"color": "green", "from": 72, "label": "concerns", "to": 1, "width": 5}, {"color": "green", "from": 67, "label": "concerns", "to": 7, "width": 5}, {"color": "green", "from": 74, "label": "concerns", "to": 10, "width": 5}, {"color": "green", "from": 79, "label": "concerns", "to": 5, "width": 5}, {"color": "green", "from": 81, "label": "concerns", "to": 8, "width": 5}, {"color": "green", "from": 77, "label": "concerns", "to": 9, "width": 5}, {"color": "green", "from": 76, "label": "concerns", "to": 4, "width": 5}, {"color": "green", "from": 68, "label": "concerns", "to": 14, "width": 5}, {"color": "green", "from": 70, "label": "concerns", "to": 2, "width": 5}, {"color": "red", "from": 71, "label": "concerns", "to": 0, "width": 5}, {"color": "green", "from": 75, "label": "concerns", "to": 6, "width": 5}, {"color": "green", "from": 82, "label": "concerns", "to": 12, "width": 5}, {"color": "green", "from": 69, "label": "concerns", "to": 3, "width": 5}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

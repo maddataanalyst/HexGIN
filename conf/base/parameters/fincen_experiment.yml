@@ -1,0 +1,74 @@
+crossval_params:
+  num_folds: 50
+  num_val: 0.0
+  num_test: 0.25
+  neg_sampling_ratio: 1.0
+  add_negative_train_samples: False
+  disjoint_train_ratio: 0.2
+  experiment_name: "cross_val"
+
+training_params:
+  max_epochs: 30
+  seed: 777
+  batch_size: 64
+  num_neighbors: [-1, -1]
+  neg_sampling_ratio: 1.0
+  shuffle: True
+  deterministic: True
+
+model_params:
+  SAGE_params:
+    sage_dims: [128, 64]
+    hidden_act_f: 'leakyReLu'
+    out_act_f: 'leakyReLu'
+    linpred_act_f: 'leakyReLu'
+    embedding_params:
+      ent_embed_dim: 64
+      filing_embed_dim: 64
+      country_emebd_dim: 12
+
+  MLP_params:
+    hdims: [ 128, 64, 32 ]
+    embedding_params:
+      ent_embed_dim: 64
+      filing_embed_dim: 64
+      country_emebd_dim: 12
+
+  HexGIN_params:
+    embedding_params:
+      ent_embed_dim: 64
+      filing_embed_dim: 64
+      country_emebd_dim: 12
+    linkpred_act_f: 'leakyReLu'
+    linkpred_dims: [64, 32, 1]
+    conv_params:
+      - activation: 'leakyReLu'
+        aggregation: 'multi'
+        batch_norm: True
+        aggregation_params:
+          aggrs:
+            - 'add'
+            - 'mean'
+          mode: 'cat'
+        relations:
+          'entity__sends__filing': [[216, 128], [128, 64]]
+          'filing__benefits__entity': [[204, 128], [128, 64]]
+          'filing__concerns__entity': [[204, 128], [128, 64]]
+        align_nets:
+          entity: 76
+          filing: 64
+      - activation: 'leakyReLu'
+        aggregation: 'multi'
+        batch_norm: True
+        aggregation_params:
+          aggrs:
+            - 'add'
+            - 'mean'
+          mode: 'cat'
+        align_nets:
+          entity: 64
+          filing: 64
+        relations:
+          'entity__sends__filing': [[192, 64]]
+          'filing__benefits__entity': [[192, 64]]
+          'filing__concerns__entity': [[192, 64]]

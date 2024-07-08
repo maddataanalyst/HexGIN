@@ -1,0 +1,7 @@
+split_params:
+  num_val: 0.15
+  num_test: 0.25
+  neg_sampling_ratio: 1.0
+  add_negative_train_samples: False
+  disjoint_train_ratio: 0.3
+  train_test_split_seed: 111

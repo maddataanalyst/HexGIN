@@ -1,0 +1,122 @@
+concerned:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/concerned.csv
+
+entities:
+    type: pandas.CSVDataset
+    filepath: data/01_raw/entities.csv
+
+entities_subset:
+    type: pandas.CSVDataset
+    filepath: data/02_intermediate/entities_subset.csv
+
+filings:
+    type: pandas.CSVDataset
+    filepath: data/01_raw/filings.csv
+
+originators_beneficiaries:
+    type: pandas.CSVDataset
+    filepath: data/01_raw/originators_beneficiaries.csv
+
+entity_encoder:
+  type: pickle.PickleDataset
+  filepath: data/02_intermediate/entity_encoder.pkl
+  backend: pickle
+
+filing_encoder:
+    type: pickle.PickleDataset
+    filepath: data/02_intermediate/filing_encoder.pkl
+    backend: pickle
+
+country_encoder:
+    type: pickle.PickleDataset
+    filepath: data/02_intermediate/country_encoder.pkl
+    backend: pickle
+
+amount_scaler:
+    type: pickle.PickleDataset
+    filepath: data/02_intermediate/amount_scaler.pkl
+    backend: pickle
+
+
+filings_matrix:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/filings_matrix.pkl
+    backend: pickle
+
+originator2filing_matrix:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/originator2filing_matrix.pkl
+    backend: pickle
+
+filing2beneficiary_matrix:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/filing2beneficiary_matrix.pkl
+    backend: pickle
+
+filing2concerned_matrix:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/filing2concerned_matrix.pkl
+    backend: pickle
+
+entities_ids_matrix:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/entities_ids_matrix.pkl
+    backend: pickle
+
+hetero_graph:
+    type: pickle.PickleDataset
+    filepath: data/04_feature/hetero_graph.pkl
+    backend: pickle
+
+train_graph:
+    type: pickle.PickleDataset
+    filepath: data/05_model_input/train_graph.pkl
+    backend: pickle
+
+val_graph:
+    type: pickle.PickleDataset
+    filepath: data/05_model_input/val_graph.pkl
+    backend: pickle
+
+test_graph:
+    type: pickle.PickleDataset
+    filepath: data/05_model_input/test_graph.pkl
+    backend: pickle
+
+
+crossval_metrics:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/crossval_metrics.csv
+
+crossval_stats:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/crossval_stats.csv
+
+bootstrap_metrics:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/bootstrap_metrics.csv
+
+hexgin_test_report:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/hexgin_test_report.csv
+
+hexgin_metrics:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/hexgin_metrics.csv
+
+mlp_test_report:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/mlp_test_report.csv
+
+mlp_metrics:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/mlp_metrics.csv
+
+sage_test_report:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/sage_test_report.csv
+
+sage_metrics:
+    type: pandas.CSVDataset
+    filepath: data/08_reporting/sage_metrics.csv

@@ -1,0 +1,29 @@
+# Config consts
+CFG_NUM_VAL = "num_val"
+CFG_NUM_TEST = "num_test"
+CFG_NEG_SAMPLING_RATIO = "neg_sampling_ratio"
+CFG_ADD_NEGATIVE_TRAIN_SAMPLES = "add_negative_train_samples"
+CFG_DISJOINT_TRAIN_RATIO = "disjoint_train_ratio"
+CFG_MAX_EPOCHS = "max_epochs"
+CFG_NUM_FOLDS = "num_folds"
+CFG_EXPERIMENT_NAME = "experiment_name"
+CFG_TRAIN_TEST_SPLIT_SEED = "train_test_split_seed"
+
+
+# Data consts
+
+## FINCEN Case Files Study
+NODE_ENTITY = "entity"
+NODE_FILING = "filing"
+RELNAME_BENEFITS = "benefits"
+RELNAME_CONCERNS = "concerns"
+RELNAME_SENDS = "sends"
+
+TARGET_RELATION = (NODE_FILING, RELNAME_BENEFITS, NODE_ENTITY)
+
+REL_ENT_SENDS_FILING = (NODE_ENTITY, RELNAME_SENDS, NODE_FILING)
+REL_FILING_CONCERNS_ENT = (NODE_FILING, RELNAME_CONCERNS, NODE_ENTITY)
+
+RELS = [REL_ENT_SENDS_FILING, REL_FILING_CONCERNS_ENT, TARGET_RELATION]
+
+COUNTRY = "country"
