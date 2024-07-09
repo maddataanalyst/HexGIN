@@ -9,6 +9,9 @@
 ## Project Overview
 This project accompanies the above-mentioned publication and focuses on developing and applying the novel HexGIN (Heterogeneous extension for Graph Isomorphism Network) model to the FinCEN Files case data. The primary goal is to compare HexGIN's performance with existing solutions such as the SAGE-based graph neural network and Multi-Layer Perceptron (MLP), demonstrating its potential advantages in anti-money laundering (AML) systems.
 
+The dataset in `data/01_raw` folder contains the original files made publicly available by the International Consortium of Investigative Journalists (ICIJ) as part of the FinCEN Files investigation. It can be found under the following address, with the full case description: [original data source](https://www.icij.org/investigations/fincen-files/download-fincen-files-transaction-data/).
+
+
 ## Processing Pipeline
 
 The data processing pipeline consists of several stages:
@@ -65,11 +68,12 @@ The main dependency resolution tool used in this project is **poetry**. The envi
 2. **Create a Conda environment**:
     ```bash
     conda env create -f environment.yml
-    conda activate your-env-name
+    conda activate hexgin
     ```
 
 3. **Install dependencies using Poetry**:
     ```bash
+    pip install poetry
     poetry install
     ```
 
@@ -78,8 +82,23 @@ The main dependency resolution tool used in this project is **poetry**. The envi
     kedro run
     ```
 
+For your convenience, steps 1-3 can be autometed by running the following command:
+```bash
+sh ./setup_project.sh
+```
+
+You will need to activate the environment later via
+
+```bash
+conda activate hexgin
+```
+
+
 ### Notebooks
+
 - **Compare Results**: The `compare_results.ipynb` notebook provides a detailed comparison of the models' performance, presenting differences between HexGIN, Graph SAGE, and MLP.
+
+- **Models presentation**: The `models_presentation.ipynb` notebook provides a detailed overview of the HexGIN model, Graph SAGE, and MLP, including their architecture and training process. 
 
 ## Running the Project
 To run the entire pipeline, use the following command:

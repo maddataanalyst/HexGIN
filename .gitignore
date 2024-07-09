@@ -17,8 +17,11 @@ data/**
 # also keep all .gitkeep files
 !.gitkeep
 
-# also keep the example dataset
+# also keep the original dataset
 !data/01_raw/*.csv
+
+# also keep the model results
+!data/08_reporting/*.csv
 
 
 ##########################
@@ -53,6 +56,9 @@ atlassian-ide-plugin.xml
 
 # C extensions
 *.so
+
+# VScode 
+.vscode
 
 ### Python template
 # Byte-compiled / optimized / DLL files
